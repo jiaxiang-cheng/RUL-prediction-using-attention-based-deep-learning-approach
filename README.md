@@ -36,6 +36,26 @@ Test RMSE: 14.353312183496199  Test score: 370.0512514015058
 lastScore: 370.0512514015058 lastRMSE 14.353312183496199
 ```
 
+### Tested Results with `code_FD004.py`
+```
+...
+
+Epoch 29/30
+8/8 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step 
+1689/1689 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step  
+Test RMSE: 24.075631225525495  Test score: 4435.054921920252
+541/541 - 13s - 23ms/step - loss: 0.0227 - mse: 0.0227
+
+Epoch 30/30
+8/8 ━━━━━━━━━━━━━━━━━━━━ 0s 3ms/step 
+1689/1689 ━━━━━━━━━━━━━━━━━━━━ 5s 3ms/step  
+Test RMSE: 23.729253363996584  Test score: 4600.772345344595
+541/541 - 13s - 23ms/step - loss: 0.0226 - mse: 0.0226
+
+8/8 ━━━━━━━━━━━━━━━━━━━━ 0s 5ms/step 
+lastScore: 4600.772345344595 lastRMSE 23.729253363996584
+```
+
 Data: 
 data can be downloaded from NASA web: https://c3.nasa.gov/dashlink/resources/139/
 
