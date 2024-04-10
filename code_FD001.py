@@ -13,6 +13,8 @@ and the second part is for training and testing
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy
+from keras.src.layers import Permute, Reshape, Lambda, RepeatVector, Flatten
 from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn import linear_model
@@ -21,9 +23,9 @@ from scipy import interpolate
 
 min_max_scaler = preprocessing.MinMaxScaler()
 
-RUL_01 = np.loadtxt('RUL_FD001.txt')
-train_01_raw = np.loadtxt('train_FD001.txt')
-test_01_raw = np.loadtxt('test_FD001.txt')
+RUL_01 = np.loadtxt('./data/RUL_FD001.txt')
+train_01_raw = np.loadtxt('./data/train_FD001.txt')
+test_01_raw = np.loadtxt('./data/test_FD001.txt')
 
 train_01_raw[:, 2:] = min_max_scaler.fit_transform(train_01_raw[:, 2:])
 test_01_raw[:, 2:] = min_max_scaler.transform(test_01_raw[:, 2:])
@@ -128,7 +130,7 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # choose GPU
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 from keras.models import Sequential
-from keras.layers import LSTM, Dense, Dropout, Convolution1D, MaxPooling1D, Input, GRU, merge
+from keras.layers import LSTM, Dense, Dropout, Convolution1D, MaxPooling1D, Input, GRU
 from keras.layers import multiply
 from keras.models import Model
 from sklearn import preprocessing
@@ -136,25 +138,25 @@ from keras.callbacks import EarlyStopping
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import keras.callbacks
 from keras import optimizers
-from keras.layers.wrappers import Bidirectional
+from keras.layers import Bidirectional
 from sklearn import preprocessing
 import keras.callbacks
-from keras.utils.np_utils import to_categorical
+from keras.utils import to_categorical
 from keras.callbacks import LearningRateScheduler
-from keras.layers.normalization import BatchNormalization
+from keras.layers import BatchNormalization
 from sklearn.metrics import confusion_matrix, f1_score, precision_score, recall_score
 
 np.random.seed(7)
-from keras.layers.wrappers import Bidirectional
+from keras.layers import Bidirectional
 from keras import backend as K
 import tensorflow as tf
 from keras.regularizers import L1L2
 from keras.callbacks import ModelCheckpoint
-from keras.layers.core import *
-from keras.layers.recurrent import LSTM
+# from keras.layers.core import *
+from keras.layers import LSTM
 from keras.models import *
-from keras.layers.merge import concatenate
-from attention_utils import get_activations, get_data_recurrent
+from keras.layers import concatenate
+# from attention_utils import get_activations, get_data_recurrent
 import time
 
 trainData = trainX
@@ -279,7 +281,7 @@ for i in range(10):  # run 10 times
     epochaccuracy = EpochAccuracy(batch_size1)
     callbacklist = [epochaccuracy]
     history = model.fit([trainData, trainX_fea], trainTarget, validation_split=0.00,
-                        batch_size=batch_size, verbose=2, nb_epoch=nb_epoch, callbacks=callbacklist)
+                        batch_size=batch_size, verbose=2, epochs=nb_epoch, callbacks=callbacklist)
 
     yPreds = model.predict([testData, testX_fea])
     yPreds = yPreds * max_RUL
@@ -288,5 +290,5 @@ for i in range(10):  # run 10 times
     test_score = myScore(testTarget, yPreds)
     print('lastScore:', test_score, 'lastRMSE', test_rmse)
 
-    scio.savemat('results/proposed' + str(i + 1) + '_FD001.mat', dict(y_true=testTarget, y_pred=yPreds))  # save results
+    scipy.io.savemat('results/proposed' + str(i + 1) + '_FD001.mat', dict(y_true=testTarget, y_pred=yPreds))
     K.clear_session()
